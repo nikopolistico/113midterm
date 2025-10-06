@@ -37,12 +37,8 @@ app.post("/register", (req, res) => {
   }
 
   // Vulnerable to SQL Injection if the input is not properly sanitized
-  const query =
-    "INSERT INTO users (username, password) VALUES ('" +
-    username +
-    "', '" +
-    password +
-    "')";
+  const query = `INSERT INTO users (username, password) VALUES ('${username}', '${password}')`;
+  
   db.query(query, (err, result) => {
     if (err) {
       return res.status(500).json({ error: "Database error" });
