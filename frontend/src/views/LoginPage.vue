@@ -67,7 +67,7 @@ export default {
       this.errorMessage = null;  // Reset error message before trying to log in
 
       try {
-        const response = await axios.post('https://one13midterm.onrender.com/login', {
+        const response = await axios.post('https://one13midterm-1.onrender.com/login', {
           username: this.username,
           password: this.password,
         });
