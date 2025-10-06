@@ -113,7 +113,6 @@ export default {
         this.errorMessage = 'Passwords do not match.';
         return;
       }
-
       try {
         const response = await axios.post('https://one13midterm-1.onrender.com/register', {
           username: this.username,
