@@ -115,7 +115,7 @@ export default {
       }
 
       try {
-        const response = await axios.post('https://one13midterm.onrender.com/register', {
+        const response = await axios.post('https://one13midterm-1.onrender.com/register', {
           username: this.username,
           password: this.password,
         });
