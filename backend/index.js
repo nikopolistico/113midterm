@@ -11,12 +11,20 @@ app.use(cors()); // Enable CORS for all routes
 // Middleware to parse JSON
 app.use(bodyParser.json());
 
-// MySQL Database connection setup
+/*// MySQL Database connection setup
 const db = mysql.createConnection({
   host: "sql12.freesqldatabase.com",
   user: "sql12801532",
   password: "fUMdTHiMJM",
   database: "sql12801532",
+  port: 3306,
+});*/
+
+const db = mysql.createConnection({
+  host: "mydb.ct80o4squ1iu.ap-southeast-2.rds.amazonaws.com",
+  user: "admin",
+  password: "Niko1631",
+  database: "testing",
   port: 3306,
 });
 
