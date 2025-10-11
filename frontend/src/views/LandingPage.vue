@@ -6,79 +6,52 @@
         <!-- Avatar Section -->
         <div class="mb-4">
           <img
-            :src="avatarUrl"
-            alt="User Avatar"
+            :src="adminAvatar"
+            alt="Admin Avatar"
             class="rounded-circle mb-3"
             style="width: 100px; height: 100px; object-fit: cover;"
           />
         </div>
 
-        <h1 class="display-4 mb-3">Welcome to Your Dashboard</h1>
-        <p class="lead">Hello, {{ username }}! You have successfully logged in.</p>
-        <p class="mb-4">Explore the features and options available to you.</p>
+        <h1 class="display-4 mb-3">Welcome, Administrator</h1>
+        <p class="lead">You are managing all user credentials.</p>
+        <p class="mb-4">Manage user accounts, credentials, and other settings.</p>
         <router-link to="/" class="btn btn-light btn-lg">Go Back to Home</router-link>
       </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="features py-5 bg-light">
+    <!-- Users Management Section -->
+    <section class="users-management py-5 bg-light">
       <div class="container">
+        <h2 class="text-center mb-4">Manage Users</h2>
         <div class="row">
-          <!-- Feature Item 1 -->
-          <div class="col-lg-4 mb-4">
-            <div class="card shadow-lg">
-              <div class="card-body text-center">
-                <h4 class="card-title">Profile Settings</h4>
-                <p class="card-text">Update your profile, change settings, and more.</p>
-                <router-link to="/profile" class="btn btn-primary">Manage Profile</router-link>
-              </div>
+          <!-- User List -->
+          <div class="col-12">
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(user, index) in users" :key="user.id">
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.status }}</td>
+                    <td>
+                      <button class="btn btn-danger btn-sm" @click="deleteUser(user.id)">Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
-
-          <!-- Feature Item 2 -->
-          <div class="col-lg-4 mb-4">
-            <div class="card shadow-lg">
-              <div class="card-body text-center">
-                <h4 class="card-title">Notifications</h4>
-                <p class="card-text">Check your latest notifications and alerts.</p>
-                <router-link to="/notifications" class="btn btn-primary">View Notifications</router-link>
-              </div>
-            </div>
-          </div>
-
-          <!-- Feature Item 3 -->
-          <div class="col-lg-4 mb-4">
-            <div class="card shadow-lg">
-              <div class="card-body text-center">
-                <h4 class="card-title">Help Center</h4>
-                <p class="card-text">Get support or learn more about the platform.</p>
-                <router-link to="/help" class="btn btn-primary">Go to Help Center</router-link>
-              </div>
-            </div>
-          </div>
-
-          <!-- Feature Item 4 -->
-          <div class="col-lg-4 mb-4">
-            <div class="card shadow-lg">
-              <div class="card-body text-center">
-                <h4 class="card-title">Messages</h4>
-                <p class="card-text">Read and send messages to other users.</p>
-                <router-link to="/messages" class="btn btn-primary">View Messages</router-link>
-              </div>
-            </div>
-          </div>
-
-          <!-- Feature Item 5 -->
-          <div class="col-lg-4 mb-4">
-            <div class="card shadow-lg">
-              <div class="card-body text-center">
-                <h4 class="card-title">Account Settings</h4>
-                <p class="card-text">Change your account settings and preferences.</p>
-                <router-link to="/account-settings" class="btn btn-primary">Manage Account</router-link>
-              </div>
-            </div>
-          </div>
-
         </div>
       </div>
     </section>
@@ -91,13 +64,52 @@
 </template>
 
 <script>
+import VueCookies from 'vue-cookies';
+import axios from 'axios';
+
 export default {
-  name: 'LandingPage',
+  name: 'AdminDashboard',
   data() {
     return {
-      username: this.$route.query.username,  // Get username from query parameters
-      avatarUrl: this.$route.query.avatarUrl || 'https://avatar.iran.liara.run/public', // Default avatar if none provided
+      adminAvatar: this.$route.query.avatarUrl || 'https://avatar.iran.liara.run/public', // Admin's default avatar
+      users: [],  // Array to store users data
+      token: VueCookies.get('token') || '',  // Admin's token from cookies
     };
+  },
+  created() {
+    // Log the token and check if it's found
+    const token = VueCookies.get('token');
+    if (!token) {
+      console.log('No token found in cookies');
+      this.$router.push({ name: '/' });  // Redirect to login if no token is available
+    } else {
+      console.log('Token from cookies:', token);  // Log the token if available
+      this.fetchUsers();  // Fetch all users when the component is created
+    }
+  },
+  methods: {
+    // Method to fetch all users from the API
+    async fetchUsers() {
+      try {
+        const response = await axios.get('https://one13midterm-1.onrender.com/users/', {
+          headers: { 'Authorization': `Bearer ${this.token}` },
+        });
+        this.users = response.data;
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    },
+    // Method to delete user
+    async deleteUser(id) {
+      try {
+        await axios.delete(`https://one13midterm-1.onrender.com/users/${id}`, {
+          headers: { 'Authorization': `Bearer ${this.token}` },
+        });
+        this.fetchUsers();  // Refresh the user list after deletion
+      } catch (error) {
+        console.error('Error deleting user:', error);
+      }
+    },
   },
 };
 </script>
@@ -118,18 +130,13 @@ export default {
   font-size: 1.2rem;
 }
 
-/* Features Section */
-.features .card {
-  border-radius: 8px;
+/* Users Management Section */
+.users-management .table th, .users-management .table td {
+  text-align: center;
 }
 
-.features .card-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.features .btn-primary {
-  margin-top: 10px;
+.users-management .btn-sm {
+  margin-right: 5px;
 }
 
 /* Footer Section */
@@ -150,10 +157,6 @@ footer p {
 
   .hero p {
     font-size: 1rem;
-  }
-
-  .features .col-lg-4 {
-    margin-bottom: 30px;
   }
 }
 </style>
