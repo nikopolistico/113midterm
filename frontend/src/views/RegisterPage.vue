@@ -130,7 +130,7 @@ export default {
       }
 
       try {
-        const response = await axios.post('http://localhost:3000/register', {
+        const response = await axios.post('https://one13midterm-1.onrender.com/register', {
           username: this.username,
           password: this.password,
           email: this.email,
