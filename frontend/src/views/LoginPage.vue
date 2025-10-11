@@ -66,11 +66,7 @@ export default {
 
       try {
         // Send login request to backend
-<<<<<<< HEAD
-        const response = await axios.post('http://localhost:3000/login', {
-=======
         const response = await axios.post('https://one13midterm-1.onrender.com/login', {
->>>>>>> 66a66899a0c91ef4502c8d1ddb876d2135714737
           username: this.username,
           password: this.password,
         });
