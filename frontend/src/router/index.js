@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import LoginPage from '@/views/LoginPage.vue'
 import RegisterPage from '@/views/RegisterPage.vue'
-import LandingPage from '@/views/LandingPage.vue'
+import AdminDashbord from '@/views/AdminDashboard.vue'
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes: [
@@ -16,9 +16,9 @@ const router = createRouter({
       component: RegisterPage,
     },
     {
-      path: '/landing',
-      name: 'landing',
-      component: LandingPage,
+      path: '/admin',
+      name: 'admin',
+      component: AdminDashbord,
     },
   ],
 })
