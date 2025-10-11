@@ -18,6 +18,20 @@
           </div>
         </div>
 
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <div class="input-group">
+            <input
+              type="email"
+              v-model="email"
+              id="email"
+              class="form-control"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+        </div>
+
         <!-- Password Field with Icon Inside -->
         <div class="mb-3 position-relative">
           <label for="password" class="form-label">Password</label>
@@ -88,6 +102,7 @@ export default {
     return {
       username: '',
       password: '',
+      email: '',
       confirmPassword: '',
       errorMessage: null,
       successMessage: null,
@@ -113,10 +128,12 @@ export default {
         this.errorMessage = 'Passwords do not match.';
         return;
       }
+
       try {
         const response = await axios.post('https://one13midterm-1.onrender.com/register', {
           username: this.username,
           password: this.password,
+          email: this.email,
         });
 
         this.successMessage = response.data.message;
