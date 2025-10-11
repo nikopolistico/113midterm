@@ -24,7 +24,6 @@
             placeholder="Enter your password"
             required
           />
-          <!-- Eye Icon for Show/Hide Password -->
           <i
             :class="passwordVisible ? 'bi bi-eye-slash' : 'bi bi-eye'"
             class="position-absolute top-50 end-0 translate-middle-y me-3"
@@ -46,6 +45,7 @@
 
 <script>
 import axios from 'axios';
+import VueCookies from 'vue-cookies';
 
 export default {
   data() {
@@ -57,27 +57,27 @@ export default {
     };
   },
   methods: {
-    // Toggle the visibility of the password
     togglePasswordVisibility() {
       this.passwordVisible = !this.passwordVisible;
     },
 
-    // Login method: Send POST request to backend to authenticate user
     async login() {
       this.errorMessage = null;  // Reset error message before trying to log in
 
       try {
+        // Send login request to backend
         const response = await axios.post('http://localhost:3000/login', {
           username: this.username,
           password: this.password,
         });
+         // Log the response data to see if the token is in the response
+        console.log('Login response:', response.data);
+        // Set the token in cookies for 1 hour
+        VueCookies.set('token', response.data.token, { expires: '1h', path: 'admin', secure: false, sameSite: 'Lax' });
 
-        // If login is successful, show a success message
-        alert(response.data.message);  // You can redirect to a different page or handle it here
-        this.$router.push({ name: 'landing', query: { username: this.username } }); // Redirect to LandingPage with username as query parameter
-
+        // Optionally, store the username in query params and redirect to admin dashboard
+        this.$router.push({ name: 'admin', query: { username: this.username } });
       } catch (error) {
-        // If login fails, show an error message
         this.errorMessage = error.response?.data?.error || 'An error occurred';
       }
     },
