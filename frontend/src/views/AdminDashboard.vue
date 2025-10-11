@@ -91,11 +91,7 @@ export default {
     // Method to fetch all users from the API
     async fetchUsers() {
       try {
-<<<<<<< HEAD
-        const response = await axios.get('http://localhost:3000/users/', {
-=======
         const response = await axios.get('https://one13midterm-1.onrender.com/users/', {
->>>>>>> 66a66899a0c91ef4502c8d1ddb876d2135714737
           headers: { 'Authorization': `Bearer ${this.token}` },
         });
         this.users = response.data;
@@ -106,11 +102,7 @@ export default {
     // Method to delete user
     async deleteUser(id) {
       try {
-<<<<<<< HEAD
-        await axios.delete(`http://localhost:3000/users/${id}`, {
-=======
         await axios.delete(`https://one13midterm-1.onrender.com/users/${id}`, {
->>>>>>> 66a66899a0c91ef4502c8d1ddb876d2135714737
           headers: { 'Authorization': `Bearer ${this.token}` },
         });
         this.fetchUsers();  // Refresh the user list after deletion
