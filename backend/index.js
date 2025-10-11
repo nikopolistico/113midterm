@@ -23,7 +23,7 @@ const db = mysql.createConnection({
   port: 3306,
 });
 
-/*// MySQL Database connection setup
+/*const db = mysql.createConnection({
 const db = mysql.createConnection({
   host: "sql12.freesqldatabase.com",
   user: "sql12801532",
@@ -32,22 +32,13 @@ const db = mysql.createConnection({
   port: 3306,
 });*/
 
-<<<<<<< HEAD
-/*const db = mysql.createConnection({
-=======
 const db = mysql.createConnection({
->>>>>>> 66a66899a0c91ef4502c8d1ddb876d2135714737
   host: "mydb.ct80o4squ1iu.ap-southeast-2.rds.amazonaws.com",
   user: "admin",
   password: "Niko1631",
   database: "testing",
   port: 3306,
-<<<<<<< HEAD
-}); */
-=======
 });
->>>>>>> 66a66899a0c91ef4502c8d1ddb876d2135714737
-
 db.connect((err) => {
   if (err) throw err;
   console.log("Connected to MySQL database");
@@ -67,10 +58,7 @@ function generateJwtToken(username) {
   return token;
 }
 
-<<<<<<< HEAD
-=======
-// Verification
->>>>>>> 66a66899a0c91ef4502c8d1ddb876d2135714737
+// Middleware to verify JWT token
 const verifyToken = (req, res, next) => {
   const token = req.headers["authorization"]?.split(" ")[1]; // Extract token
   if (!token) return res.status(403).json({ message: "Token is required" });
@@ -84,11 +72,6 @@ const verifyToken = (req, res, next) => {
   });
 };
 
-<<<<<<< HEAD
-
-=======
-// getting all the users
->>>>>>> 66a66899a0c91ef4502c8d1ddb876d2135714737
 app.get("/users", verifyToken, (req, res) => {
   const currentUsername = req.user.username; // Get current user's username from the token payload
 
@@ -103,20 +86,12 @@ app.get("/users", verifyToken, (req, res) => {
   });
 });
 
-<<<<<<< HEAD
-=======
-// Deleting the specific users
->>>>>>> 66a66899a0c91ef4502c8d1ddb876d2135714737
 app.delete("/users/:id", verifyToken, (req, res) => {
   const userId = req.params.id;
   console.log("Deleting user with ID:", userId);
   // SQL query to delete the user
   const query = `DELETE FROM users WHERE id = ${userId}`;
-<<<<<<< HEAD
-  console.log("Executing query:", query);
-=======
 
->>>>>>> 66a66899a0c91ef4502c8d1ddb876d2135714737
   db.query(query, (err, results) => {
     if (err) {
       return res.status(500).json({ error: "Database error" });
